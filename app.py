@@ -54,13 +54,24 @@ top_10_freq_jogo = pd.DataFrame(collections.Counter(
 
 grafico_top10 = px.bar(top_10_freq_jogo, x='Game', y='Frequency')
 
-coluna1, coluna2 = st.columns(2)
+#Melhores jogos
+coluna = ['NA_Sales']
+titulo = ['North America']
+
+for i, c in enumerate(coluna):
+    df_venda = df_selecao.groupby('Name').sum().sort_values(c, ascending=False).head(10).reset_index()[['Name', c]]
+    grafico_melhor_jogo = px.bar(df_venda, x='Name', y=c, title="Os 10 melhores jogos em {}".format(titulo[i]), labels={'Name', 'Game'});
+
+coluna1, coluna2, coluna3 = st.columns(3)
 
 with coluna1:
     grafico_frequencia
 
 with coluna2:
     grafico_top10
+
+with coluna3:
+    grafico_melhor_jogo
 
 #Remove estilo Streamlit
 remove_st_estilo = """
